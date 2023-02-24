@@ -32,7 +32,9 @@ app.post('/books/insertbook', (req, res) => {
 
 app.get('/books', (req, res) => {
   const sql = `SELECT * FROM books`
+
   conn.query(sql, (err, data) => {
+
     if (err) {
       console.log(err)
       return
@@ -41,6 +43,23 @@ app.get('/books', (req, res) => {
     const books = data
 
     res.render('books', { books })
+  })
+})
+
+app.get('/books/:id', (req, res) => {
+  const { id } = req.params
+
+  const query = `SELECT * FROM books WHERE id = ${id}`
+
+  conn.query(query, (err, data) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    const book = data[0]
+
+    res.render('book', { book })
   })
 })
 

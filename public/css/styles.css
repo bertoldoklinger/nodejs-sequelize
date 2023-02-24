@@ -1,9 +1,26 @@
 * {
   font-family: Helvetica;
+  margin: 0;
 }
 
 h1 {
   text-align: center;
+}
+
+#navbar {
+  border-bottom: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+#navbar ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+}
+
+#navbar ul li {
+  margin-left: 1em;
 }
 
 .form {
@@ -39,4 +56,12 @@ h1 {
 
 .bold {
   font-weight: bold;
+}
+
+#book-page {
+  padding: 2em;
+}
+
+#book-page .container {
+  text-align: center;
 }
