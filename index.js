@@ -30,6 +30,20 @@ app.post('/books/insertbook', (req, res) => {
   })
 })
 
+app.get('/books', (req, res) => {
+  const sql = `SELECT * FROM books`
+  conn.query(sql, (err, data) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    const books = data
+
+    res.render('books', { books })
+  })
+})
+
 const conn = mysql.createConnection({
   host: 'localhost',
   user: 'root',

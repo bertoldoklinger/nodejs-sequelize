@@ -25,3 +25,18 @@ h1 {
 .form-control input {
   padding: 5px;
 }
+
+.books-container {
+  width: 450px;
+  margin: 0 auto;
+}
+
+.books-container div {
+  border-bottom: 1 px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+}
+
+.bold {
+  font-weight: bold;
+}
