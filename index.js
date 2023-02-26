@@ -17,19 +17,6 @@ app.get('/', (req, res) => {
   res.render('home');
 })
 
-app.post('/books/insertbook', (req, res) => {
-  const { title, pageqty } = req.body
-
-  const query = `INSERT INTO books (title, pageqty) VALUES ('${title}', ${pageqty})`
-
-  conn.query(query, (err, result) => {
-    if (err) {
-      console.log(err)
-    }
-    res.redirect('/')
-  })
-})
-
 app.get('/books', (req, res) => {
   const sql = `SELECT * FROM books`
 
@@ -52,7 +39,7 @@ app.get('/books', (req, res) => {
 app.get('/books/:id', (req, res) => {
   const { id } = req.params
 
-  const query = `SELECT * FROM books WHERE id = ${id}`
+  const query = `SELECT * FROM books WHERE id = '${id}'`
 
   conn.query(query, (err, data) => {
     if (err) {
@@ -69,7 +56,7 @@ app.get('/books/:id', (req, res) => {
 app.get('books/edit/:id', (req, res) => {
   const { id } = req.params
 
-  const sql = `SELECT * FROM books WHERE id = ${id}`
+  const sql = `SELECT * FROM books WHERE id = '${id}'`
 
   conn.query(sql, (err, data) => {
     if (err) {
@@ -82,7 +69,33 @@ app.get('books/edit/:id', (req, res) => {
   })
 })
 
+app.post('/books/insertbook', (req, res) => {
+  const { title, pageqty } = req.body
 
+  const query = `INSERT INTO books (title, pageqty) VALUES ('${title}', ${pageqty})`
+
+  conn.query(query, (err, result) => {
+    if (err) {
+      console.log(err)
+    }
+    res.redirect('/')
+  })
+})
+
+app.post('books/updatebook', (req, res) => {
+  const { id, title, pageqty } = req.body
+
+  const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' WHERE id = '${id}'`
+
+  conn.query(sql, (err, data) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+
+    res.redirect('/books')
+  })
+})
 
 
 const conn = mysql.createConnection({
