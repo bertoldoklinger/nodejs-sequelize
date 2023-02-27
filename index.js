@@ -37,9 +37,11 @@ app.get('/books', (req, res) => {
 app.get('/books/:id', (req, res) => {
   const { id } = req.params
 
-  const query = `SELECT * FROM books WHERE id = ${id}`
+  const query = `SELECT * FROM books WHERE ?? = ?`
 
-  pool.query(query, (err, data) => {
+  const data = ['id', id]
+
+  pool.query(query, data, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -54,9 +56,11 @@ app.get('/books/:id', (req, res) => {
 app.get('/books/edit/:id', (req, res) => {
   const { id } = req.params
 
-  const sql = `SELECT * FROM books WHERE id = ${id}`
+  const sql = `SELECT * FROM books WHERE ?? = ?`
 
-  pool.query(sql, (err, data) => {
+  const data = ['id', id]
+
+  pool.query(sql, data, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -70,9 +74,10 @@ app.get('/books/edit/:id', (req, res) => {
 app.post('/books/insertbook', (req, res) => {
   const { title, pageqty } = req.body
 
-  const query = `INSERT INTO books (title, pageqty) VALUES('${title}', ${pageqty})`
+  const query = `INSERT INTO books (??, ??) VALUES(?, ?)`
+  const data = ['title', 'pageqty', title, pageqty]
 
-  pool.query(query, (err, result) => {
+  pool.query(query, data, (err, result) => {
     if (err) {
       console.log(err)
     }
@@ -83,9 +88,11 @@ app.post('/books/insertbook', (req, res) => {
 app.post('/books/updatebook', (req, res) => {
   const { id, title, pageqty } = req.body
 
-  const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' WHERE id = ${id} `
+  const sql = `UPDATE books SET ?? = ?, ?? = ? WHERE ?? = ?`
 
-  pool.query(sql, (err, data) => {
+  const data = ['title', title, 'pageqty', pageqty, 'id', id]
+
+  pool.query(sql, data, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -98,9 +105,11 @@ app.post('/books/updatebook', (req, res) => {
 app.post('/books/remove/:id', (req, res) => {
   const { id } = req.params
 
-  const sql = `DELETE FROM books WHERE id='${id}'`
+  const sql = `DELETE FROM books WHERE ?? = ?`
 
-  pool.query(sql, (err) => {
+  const data = ['id', id]
+
+  pool.query(sql, data, (err) => {
     if (err) {
       console.log(err)
       return
