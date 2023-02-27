@@ -1,6 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const mysql = require('mysql');
+const pool = require('./db/db.js');
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.get('/books', (req, res) => {
   const sql = `SELECT * FROM books`
 
-  db.query(sql, (err, data) => {
+  pool.query(sql, (err, data) => {
 
     if (err) {
       console.log(err)
@@ -39,7 +39,7 @@ app.get('/books/:id', (req, res) => {
 
   const query = `SELECT * FROM books WHERE id = ${id}`
 
-  db.query(query, (err, data) => {
+  pool.query(query, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -56,7 +56,7 @@ app.get('/books/edit/:id', (req, res) => {
 
   const sql = `SELECT * FROM books WHERE id = ${id}`
 
-  db.query(sql, (err, data) => {
+  pool.query(sql, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -72,7 +72,7 @@ app.post('/books/insertbook', (req, res) => {
 
   const query = `INSERT INTO books (title, pageqty) VALUES('${title}', ${pageqty})`
 
-  db.query(query, (err, result) => {
+  pool.query(query, (err, result) => {
     if (err) {
       console.log(err)
     }
@@ -85,7 +85,7 @@ app.post('/books/updatebook', (req, res) => {
 
   const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' WHERE id = ${id} `
 
-  db.query(sql, (err, data) => {
+  pool.query(sql, (err, data) => {
     if (err) {
       console.log(err)
       return
@@ -100,7 +100,7 @@ app.post('/books/remove/:id', (req, res) => {
 
   const sql = `DELETE FROM books WHERE id='${id}'`
 
-  db.query(sql, (err) => {
+  pool.query(sql, (err) => {
     if (err) {
       console.log(err)
       return
@@ -111,22 +111,6 @@ app.post('/books/remove/:id', (req, res) => {
 })
 
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'nodemysql'
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 })
-
-db.connect((err) => {
-  if (err) {
-    console.log(err);
-  }
-
-  console.log('Connected to MySQL');
-
-  app.listen(3000, () => {
-    console.log('Server started on port 3000');
-  })
-})
-
